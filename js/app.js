@@ -1,7 +1,8 @@
 //Variables
 const carrito = document.getElementById('carrito');
 const cursos = document.getElementById('lista-cursos');
-const listaCursos = document.querySelector('#lista-carrito tbody')
+const listaCursos = document.querySelector('#lista-carrito tbody');
+const vaciarCarritoBtn = document.getElementById('vaciar-carrito');
 
 //Insertar data al carrito
 const insertarCarrito = (curso) => {
@@ -50,9 +51,17 @@ const eliminarCurso = (e) => {
     }
 }
 
+const vaciarCarrito = () => {
+    while(listaCursos.firstChild){
+        listaCursos.removeChild(listaCursos.firstChild);
+    }
+    return false;
+}
+
 //Listeners
 const cargarEventListeners = () => {
     cursos.addEventListener('click', comprarCurso);
     carrito.addEventListener('click', eliminarCurso);
+    vaciarCarritoBtn.addEventListener('click', vaciarCarrito);
 }
 cargarEventListeners();
