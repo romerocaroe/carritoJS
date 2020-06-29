@@ -4,8 +4,29 @@ const cursos = document.getElementById('lista-cursos');
 const listaCursos = document.querySelector('#lista-carrito tbody');
 const vaciarCarritoBtn = document.getElementById('vaciar-carrito');
 
-//Insertar data al carrito
+//Obtener cursos del local storage y comprobamos si hay algo
+const obtenerCursosLocalStorage = () => {
+    let cursosLS;
+    if(localStorage.getItem('cursos') === null){
+        cursosLS = [];
+    } else {
+        cursosLS = JSON.parse(localStorage.getItem('cursos'))
+    }
+    return cursosLS;
+}
+
+//Almacerna cursos del carrito al Local Storage
+const guardarCursosLocalStorage = (curso) => {
+    let cursos;
+    cursos = obtenerCursosLocalStorage();
+    cursos.push(curso);
+    console.log('cursos', cursos)
+    console.log('curso', curso)
+    localStorage.setItem('cursos', JSON.stringify(cursos));
+}
+
 const insertarCarrito = (curso) => {
+    //Insertar data al carrito
     const row = document.createElement('tr');
     row.innerHTML = `
         <td>
@@ -17,7 +38,8 @@ const insertarCarrito = (curso) => {
             <a href="#" class="borrar-curso" data-id="${curso.id}">X</a>
         </td>
     `;
-    listaCursos.appendChild(row)
+    listaCursos.appendChild(row);
+    guardarCursosLocalStorage(curso);
 }
 
 //Lee los datos del curso
@@ -58,10 +80,30 @@ const vaciarCarrito = () => {
     return false;
 }
 
+const leerLocalStorage = () => {
+    let cursosLS;
+    cursosLS = obtenerCursosLocalStorage();
+    cursosLS.forEach(curso => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <img src="${curso.imagen}" width="100">
+            </td>
+            <td>${curso.titulo}</td>
+            <td>${curso.precio}</td>
+            <td>
+                <a href="#" class="borrar-curso" data-id="${curso.id}">X</a>
+            </td>
+        `;
+        listaCursos.appendChild(row);
+    })
+}
+
 //Listeners
 const cargarEventListeners = () => {
     cursos.addEventListener('click', comprarCurso);
     carrito.addEventListener('click', eliminarCurso);
     vaciarCarritoBtn.addEventListener('click', vaciarCarrito);
+    document.addEventListener('DOMContentLoaded', leerLocalStorage);
 }
 cargarEventListeners();
