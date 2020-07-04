@@ -88,10 +88,15 @@ const eliminarCurso = (e) => {
     eliminarCursoLocalStorage(cursoId);
 }
 
+const vaciarLocalStorage = () => {
+    localStorage.clear();
+}
+
 const vaciarCarrito = () => {
     while(listaCursos.firstChild){
         listaCursos.removeChild(listaCursos.firstChild);
     }
+    vaciarLocalStorage();
     return false;
 }
 
