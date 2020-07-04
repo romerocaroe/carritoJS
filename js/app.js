@@ -60,17 +60,32 @@ const comprarCurso = (e) => {
     if(e.target.classList.contains('agregar-carrito')){
         const curso = e.target.parentElement.parentElement;
         //Llamamos a la sig. función el curso seleccionado para obtener los datos
-        leerDatosCurso(curso)
+        leerDatosCurso(curso);
     }
+}
+
+const eliminarCursoLocalStorage = (curso) => {
+    let cursosLS;
+    cursosLS = obtenerCursosLocalStorage();
+    cursosLS.forEach((cursoLS, index) => {
+        if(cursoLS.id === curso){
+            cursosLS.splice(index, 1)
+        }
+    })
+    localStorage.setItem('cursos', JSON.stringify(cursosLS));
 }
 
 const eliminarCurso = (e) => {
     e.preventDefault();
 
-    let curso;
+    let curso, 
+        cursoId;
     if(e.target.classList.contains('borrar-curso')){
         e.target.parentElement.parentElement.remove();
+        curso = e.target.parentElement.parentElement;
+        cursoId = curso.querySelector('a').getAttribute('data-id');
     }
+    eliminarCursoLocalStorage(cursoId);
 }
 
 const vaciarCarrito = () => {
